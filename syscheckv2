@@ -1,0 +1,29 @@
+#! /usr/bin/env python3
+
+import os
+import shutil
+import psutil
+
+
+def check(disk, min , min_percent):
+	global disk_usagefree
+	disk_usage = shutil.disk_usage(disk)
+	disk_usagefree = disk_usage.free
+	percent = 100 * disk_usagefree / disk_usage.total
+	global giga
+	giga = disk_usagefree / 2 ** 30
+	if percent < min_percent or giga < min:
+		return False
+	return True
+
+def cpu():
+	global usage
+	usage = psutil.cpu_percent(1)
+	return usage < 75
+
+if not check("/" , 2 , 20) or not cpu():
+	print("ERROR Insufficient current disk space!")
+else:
+	print("{} or {}  \n{} \nEverything ok!".format(disk_usagefree ,giga , usage ))
+
+
