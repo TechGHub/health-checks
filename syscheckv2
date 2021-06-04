@@ -10,8 +10,8 @@ def check(disk, min_gb , min_percent):
 	disk_usage = shutil.disk_usage(disk)
 	disk_usagefree = disk_usage.free
 	percent = 100 * disk_usagefree / disk_usage.total
-	global giga
-	giga = disk_usagefree / 2 ** 30
+	global current_gb
+	current_gb = disk_usagefree / 2 ** 30
 	if percent < min_percent or current_gb < min_gb:
 		return False
 	return True
@@ -24,6 +24,6 @@ def cpu():
 if not check("/" , 2 , 20) or not cpu():
 	print("ERROR Insufficient current disk space!")
 else:
-	print("{} or {}  \n{} \nEverything ok!".format(disk_usagefree ,giga , usage ))
+	print("{} or {}  \n{} \nEverything ok!".format(disk_usagefree ,current_gb , usage ))
 
 
