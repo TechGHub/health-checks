@@ -5,7 +5,7 @@ import shutil
 import psutil
 
 
-def check(disk, min , min_percent):
+def check(disk, min_gb , min_percent):
 	global disk_usagefree
 	disk_usage = shutil.disk_usage(disk)
 	disk_usagefree = disk_usage.free
