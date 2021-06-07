@@ -4,6 +4,7 @@ import os
 import shutil
 import psutil
 import sys
+import socket
 
 def check_reboot():
 	"""Returns True if the computer has a pending reboot"""
@@ -21,6 +22,14 @@ def check(disk, min_gb , min_percent):
 		return True
 	return False
 
+
+def check_no_network():
+	"""Returns True if it fails to resolve Google's URL, False if otherwise"""
+	try:
+		socket.gethostbyname("www.google.com")
+		return False
+	except:
+		return True
 
 def check_root_full():
 	"""Returns True if the root partition is full, false otherwise"""
@@ -40,7 +49,7 @@ def disk_space():
 		return True
 
 def main():
-	checks = [(check_reboot, "Pending Reboot"), (check_root_full, "Root partition is full"), (cpu, "Insufficient CPU"), (disk_space, "Insufficient Disk Space")]
+	checks = [(check_reboot, "Pending Reboot"), (check_root_full, "Root partition is full"), (cpu, "Insufficient CPU"), (disk_space, "Insufficient Disk Space"), (check_no_network, "No Working Network")]
 	everything_ok = True
 	for check,msg in checks:
 		if check():
